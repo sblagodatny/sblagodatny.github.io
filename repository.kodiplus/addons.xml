@@ -160,24 +160,6 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="repository.repository.kodiplus" name="Kodi Plus Repository" provider-name="Stas Blagodatny" version="4.0">
-<extension name="Kodi Plus Repository" point="xbmc.addon.repository">
-<dir>
-<info compressed="false">https://sblagodatny.github.io/repository.kodiplus/addons.xml</info>
-<checksum>https://sblagodatny.github.io/repository.kodiplus/addons.xml.md5</checksum>
-<datadir zip="true">https://sblagodatny.github.io/repository.kodiplus</datadir>
-</dir>
-</extension>
-<extension point="xbmc.addon.metadata">
-<summary>Kodi Plus Repository</summary>
-<description>Kodi Plus Repository</description>
-<disclaimer></disclaimer>
-<platform>all</platform>
-<assets>
-<icon>icon.png</icon>
-</assets>
-</extension>
-</addon>
 <addon id="script.module.helpers" name="Helpers" provider-name="Stas Blagodatny" version="1.36">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
