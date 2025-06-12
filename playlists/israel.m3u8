@@ -1,0 +1,31 @@
+#EXTM3U 
+
+#EXTINF:0 tvg-logo="http://epg.one/img2/2673.png" group-title="IL",כאן 11
+https://kan11w.media.kan.org.il/hls/live/2105694/2105694/master.m3u8
+
+#EXTINF:0 tvg-logo="http://epg.one/img2/2670.png" group-title="IL",קשת 12
+plugin://plugin.video.idanplus/?mode=5&url=ch_12
+
+#EXTINF:0 tvg-logo="http://epg.one/img2/2671.png" group-title="IL",רשת 13
+https://cdnapisec.kaltura.com/p/2748741/sp/2748741/playManifest/entryId/1_ubg28z0w/deliveryProfileId/672/protocol/https/format/applehttp/a.m3u8?playSessionId=4e30921c-e61a-0bad-57c8-87a5107f1743:a6dd7751-e60b-8f30-9efa-ffe8d9d6359a&referrer=aHR0cHM6Ly8xM3R2LmNvLmlsL2xpdmUv&clientTag=html5:v1.0.2
+
+#EXTINF:0 tvg-logo="https://www.now14.co.il/wp-content/themes/14-child/assets/logo14/2649x932.png" group-title="IL",עכשיו 14
+https://ch14-channel14-content.akamaized.net/hls/live/2104807/CH14_CHANNEL14/master.m3u8
+
+#EXTINF:0 tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoJmRmruV3haPkuub-Et1HgqJzRtDcsp8i_A&s" group-title="IL",כאן חינוכית 23
+https://kan23.media.kan.org.il/hls/live/2024691/2024691/master.m3u8
+
+#EXTINF:0 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/52/Sport5_Logo.png" group-title="IL",ספורט 5 אתר
+https://rgelive.akamaized.net/hls/live/2043151/radiolive/playlist.m3u8
+
+#EXTINF:0 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/I24_logo_FINAL_BLUE-02.png/800px-I24_logo_FINAL_BLUE-02.png" group-title="IL",I24 חדשות
+https://bcovlive-a.akamaihd.net/54b8e6b753e3409c91856201d1f08731/eu-central-1/5377161796001/playlist.m3u8
+
+#EXTINF:0 tvg-logo="https://www.stingtv.co.il/wp-content/uploads/2022/05/logo_hanofesh_118x104.jpg" group-title="IL",ערוץ הנופש
+https://d1yd8hohnldm33.cloudfront.net/out/v1/19dee23c2cc24f689bd4e1288661ee0c/index.m3u8
+
+#EXTINF:0 tvg-logo="https://images.frp1.ott.kaltura.com/Service.svc/GetImage/p/5031/entry_id/fc0d8109a18a4db3b585f154d32bd5b1/version/28/width/288/height/153/" group-title="IL",ערוץ הקומדיות
+https://d15ds134q59udk.cloudfront.net/out/v1/fbba879221d045598540ee783b140fe2/index.m3u8
+
+#EXTINF:0 tvg-logo="https://www.stingtv.co.il/wp-content/uploads/2019/12/reality.jpg" group-title="IL",ערוץ הריאליטי
+https://d2dffl3588mvfk.cloudfront.net/out/v1/d8e15050ca4148aab0ee387a5e2eb46b/index.m3u8
