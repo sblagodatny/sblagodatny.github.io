@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addons>
+<addon id="plugin.audio.karaoke" name="Karaoke" provider-name="Stas Blagodatny" version="1.0">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.youtube"></import>
+<import addon="script.module.lyrics"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>audio</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Karaoke</summary>
+<description lang="en">Karaoke</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.audio.scloud" name="SoundCloud" provider-name="Stas Blagodatny" version="1.1">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>audio</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">SoundCloud</summary>
+<description lang="en">SoundCloud</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.audio.ytubemusic" name="YouTube Music" provider-name="Stas Blagodatny" version="1.19">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.youtube"></import>
+<import addon="script.module.lyrics"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>audio</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">YouTube Music</summary>
+<description lang="en">YouTube Music</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.game.kahoot" name="Kahoot" provider-name="Stas Blagodatny" version="1.2">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>game</provides>
+</extension>
+<extension library="./lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Kahoot</summary>
+<description lang="en">Kahoot</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.image.gphotos" name="Google Photos" provider-name="Stas Blagodatny" version="5.0">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>image</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Google Photos</summary>
+<description lang="en">Google Photos</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.program.androidapps" name="Android Apps" provider-name="Stas Blagodatny" version="1.3">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>executable</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en_GB">Android Apps</summary>
+<description lang="en_GB">Get Android Apps from various unofficial stores</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.video.tmdb" name="TMDB" provider-name="Stas Blagodatny" version="6.8">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.tmdb"></import>
+<import addon="script.module.vod"></import>
+<import addon="script.module.subs"></import>
+<import addon="script.module.torrent"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>video</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">The Movie DB</summary>
+<description lang="en">The Movie DB</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.video.vod" name="VOD" provider-name="Stas Blagodatny" version="8.14">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.vod"></import>
+<import addon="script.module.youtube"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>video</provides>
+</extension>
+<extension library="./lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">VOD</summary>
+<description lang="en">VOD</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.35">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.youtube"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>video</provides>
+</extension>
+<extension library="." point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">YouTube</summary>
+<description lang="en">YouTube</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
+<addon id="script.module.helpers" name="Helpers" provider-name="Stas Blagodatny" version="1.36">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.six"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Common Kodi Python helpers</summary>
+<description lang="en">Common Kodi Python helpers</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.lyrics" name="Lyrics Libraries" provider-name="Stas Blagodatny" version="1.0">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Lyrics Libraries</summary>
+<description lang="en">Lyrics Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.subs" name="Subtitles Libraries" provider-name="Stas Blagodatny" version="1.4">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Subtitles Libraries</summary>
+<description lang="en">Subtitles Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.tmdb" name="TMDB Libraries" provider-name="Stas Blagodatny" version="1.6">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">TMDB Libraries</summary>
+<description lang="en">TMDB Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.torrent" name="Torrent Libraries" provider-name="Stas Blagodatny" version="1.1">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">Torrent Libraries</summary>
+<description lang="en">Torrent Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.vod" name="VOD Libraries" provider-name="Stas Blagodatny" version="1.20">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+<import addon="script.module.helpers"></import>
+<import addon="script.module.tmdb"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension library="script.py" point="xbmc.python.library"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">VOD Libraries</summary>
+<description lang="en">VOD Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.28">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.beautifulsoup4"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.future"></import>
+</requires>
+<extension library="lib" point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">YouTube Libraries</summary>
+<description lang="en">YouTube Libraries</description>
+<assets><icon>icon.png</icon></assets>
+</extension>
+</addon>
+<addon id="skin.estuary.flex" name="Estuary Flex" provider-name="Stas Blagodatny" version="4.37">
+<requires>
+<import addon="xbmc.gui" version="5.17.0"></import>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.beautifulsoup4"></import>
+</requires>
+<extension debugging="false" point="xbmc.gui.skin">
+<res aspect="4:3" default="false" folder="xml" height="1440" width="1920"></res>
+<res aspect="3:2" default="false" folder="xml" height="1280" width="1920"></res>
+<res aspect="16:10" default="false" folder="xml" height="1200" width="1920"></res>
+<res aspect="17:9" default="false" folder="xml" height="1080" width="2040"></res>
+<res aspect="16:9" default="true" folder="xml" height="1080" width="1920"></res>
+<res aspect="21:9" default="false" folder="xml" height="1080" width="2560"></res>
+<res aspect="19.5:9" default="false" folder="xml" height="1080" width="2338"></res>
+<res aspect="18:9" default="false" folder="xml" height="1080" width="2160"></res>
+</extension>
+<extension library="script.py" point="xbmc.python.library"></extension>
+<extension point="xbmc.addon.metadata">
+<platform>all</platform>
+<assets>
+<icon>resources/icon.png</icon>
+<fanart>resources/fanart.jpg</fanart>
+<screenshot>resources/screenshots/Home.jpg</screenshot>
+<screenshot>resources/screenshots/List.jpg</screenshot>
+<screenshot>resources/screenshots/Shift.jpg</screenshot>
+<screenshot>resources/screenshots/Wall.jpg</screenshot>
+<screenshot>resources/screenshots/Info.jpg</screenshot>
+</assets>
+<summary lang="eu_ES">Estuary Flex skin</summary>
+<description lang="en_US">Estuary Flex is a fork from Kodi's official Estuary skin. It provides fully configurable home window as well as superb look and feel.</description>
+</extension>
+</addon>
+</addons>
