@@ -34,7 +34,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.audio.ytubemusic" name="YouTube Music" provider-name="Stas Blagodatny" version="1.19">
+<addon id="plugin.audio.ytubemusic" name="YouTube Music" provider-name="Stas Blagodatny" version="1.20">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
@@ -141,7 +141,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.35">
+<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.36">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
@@ -248,7 +248,7 @@
 <assets><icon>icon.png</icon></assets>
 </extension>
 </addon>
-<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.28">
+<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.29">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.beautifulsoup4"></import>
@@ -256,6 +256,7 @@
 <import addon="script.module.future"></import>
 </requires>
 <extension library="lib" point="xbmc.python.module"></extension>
+<extension library="script.py" point="xbmc.python.library"></extension>
 <extension point="xbmc.addon.metadata">
 <summary lang="en">YouTube Libraries</summary>
 <description lang="en">YouTube Libraries</description>
