@@ -141,7 +141,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.37">
+<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.38">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
@@ -248,7 +248,7 @@
 <assets><icon>icon.png</icon></assets>
 </extension>
 </addon>
-<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.31">
+<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.32">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.beautifulsoup4"></import>
@@ -263,7 +263,7 @@
 <assets><icon>icon.png</icon></assets>
 </extension>
 </addon>
-<addon id="skin.estuary.flex" name="Estuary Flex" provider-name="Stas Blagodatny" version="4.37">
+<addon id="skin.estuary.flex" name="Estuary Flex" provider-name="Stas Blagodatny" version="4.38">
 <requires>
 <import addon="xbmc.gui" version="5.17.0"></import>
 <import addon="xbmc.python" version="3.0.0"></import>
