@@ -248,7 +248,7 @@
 <assets><icon>icon.png</icon></assets>
 </extension>
 </addon>
-<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.35">
+<addon id="script.module.youtube" name="YouTube Libraries" provider-name="Stas Blagodatny" version="1.36">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.beautifulsoup4"></import>
