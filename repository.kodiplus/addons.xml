@@ -69,7 +69,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.image.gphotos" name="Google Photos" provider-name="Stas Blagodatny" version="5.0">
+<addon id="plugin.image.gphotos" name="Google Photos" provider-name="Stas Blagodatny" version="4.12">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
