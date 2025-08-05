@@ -262,7 +262,7 @@
 <assets><icon>icon.png</icon></assets>
 </extension>
 </addon>
-<addon id="skin.estuary.flex" name="Estuary Flex" provider-name="Stas Blagodatny" version="4.40">
+<addon id="skin.estuary.flex" name="Estuary Flex" provider-name="Stas Blagodatny" version="4.41">
 <requires>
 <import addon="xbmc.gui" version="5.17.0"></import>
 <import addon="xbmc.python" version="3.0.0"></import>
