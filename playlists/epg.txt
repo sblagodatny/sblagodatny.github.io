@@ -1,0 +1,7 @@
+Israel XMLTV
+https://epgshare01.online/epgshare01/epg_ripper_IL1.xml.gz
+
+
+Israel JSONTV
+http://bit.ly/epgfish
+http://bit.ly/epgzip
