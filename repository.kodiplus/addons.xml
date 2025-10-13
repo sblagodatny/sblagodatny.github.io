@@ -34,7 +34,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.audio.ytubemusic" name="YouTube Music" provider-name="Stas Blagodatny" version="1.25">
+<addon id="plugin.audio.ytubemusic" name="YouTube Music" provider-name="Stas Blagodatny" version="1.26">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
@@ -141,7 +141,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.45">
+<addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.46">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
