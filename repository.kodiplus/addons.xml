@@ -141,6 +141,22 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
+<addon id="plugin.video.yt" name="YouTube" provider-name="Stas Blagodatny" version="1.0">
+<requires>
+<import addon="xbmc.python" version="3.0.0"></import>
+<import addon="script.module.requests"></import>
+<import addon="script.module.helpers"></import>
+</requires>
+<extension library="main.py" point="xbmc.python.pluginsource">
+<provides>video</provides>
+</extension>
+<extension library="." point="xbmc.python.module"></extension>
+<extension point="xbmc.addon.metadata">
+<summary lang="en">YouTube</summary>
+<description lang="en">YouTube</description>
+<assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
+</extension>
+</addon>
 <addon id="plugin.video.ytube" name="YouTube" provider-name="Stas Blagodatny" version="2.47">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
