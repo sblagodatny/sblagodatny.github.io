@@ -65,7 +65,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.image.gphotos" name="Google Photos" provider-name="Stas Blagodatny" version="6.0">
+<addon id="plugin.image.gphotos" name="Google Photos" provider-name="Stas Blagodatny" version="6.1">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
@@ -119,13 +119,12 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.vod" name="VOD" provider-name="Stas Blagodatny" version="8.15">
+<addon id="plugin.video.vod" name="VOD" provider-name="Stas Blagodatny" version="8.16">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
 <import addon="script.module.helpers"></import>
 <import addon="script.module.vod"></import>
-<import addon="script.module.youtube"></import>
 </requires>
 <extension library="main.py" point="xbmc.python.pluginsource">
 <provides>video</provides>
