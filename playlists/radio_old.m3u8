@@ -1,0 +1,13 @@
+#EXTM3U
+
+#EXTINF:0,tvg-logo="https://dyjvnjd6yl5jx.cloudfront.net/wp-content/uploads/2020/11/d0bbd0bed0b3d0be-d0bdd0bed0b2d18bd0b9-d0bcd0b0d0bbd18bd0b9.png" group-title="radio" radio="true",Первое Радио (Israel)
+https://cdn.cybercdn.live/Pervoia/Audio/icecast.audio
+#EXTINF:0,tvg-logo="https://eco99fm.maariv.co.il/assets/images/eco99seo.jpeg" group-title="radio" radio="true",Eco99FM (Israel)
+https://eco-live.mediacast.co.il/99fm_aac
+#EXTINF:0,tvg-logo="https://kanstatic.azureedge.net/download/pictures/App12_Station_Logo_White_2.png" group-title="radio" radio="true",Kan88FM (Israel)
+https://kanliveicy.media.kan.org.il/icy/749623_mp3?providername=chrome_ex
+#EXTINF:0,tvg-logo="https://topradio.me/assets/image/radio/180/dorojnoe-radio.webp" group-title="radio" radio="true",Дорожное Радио (Russia)
+https://hls-01-dorognoe.emgsound.ru/15/playlist.m3u8
+#EXTINF:0,tvg-logo="https://topradio.me/assets/image/radio/180/russkoe-radio.webp" group-title="radio" radio="true",Русское Радио (Russia)
+https://rusradio.hostingradio.ru/rusradio96.aacp
+
