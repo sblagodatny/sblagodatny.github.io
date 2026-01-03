@@ -11,7 +11,7 @@ https://rusradio.hostingradio.ru/rusradio96.aacp
 #EXTINF:0 tvg-logo="https://www.radiorecord.ru/icons/apple-touch-icon.png" radio="true" group-title="radio",Radio Record - Russian Mix (RU)
 https://radiorecord.hostingradio.ru/rus96.aacp
 
-#EXTINF:0 tvg-logo="https://cdn.aptoide.com/imgs/0/c/e/0ce24e816d3c7ef711f7e5a86677072c_icon.png?w=128" radio="true" group-title="radio",Radio Energy (RU)
+#EXTINF:0 tvg-logo="https://images.seeklogo.com/logo-png/62/2/radio-energy-perm-97-6-fm-logo-png_seeklogo-621380.png" radio="true" group-title="radio",Radio Energy (RU)
 https://hls-01-gpm.hostingradio.ru/energyfm495/32/playlist.m3u8
 
 #EXTINF:0 tvg-logo="https://www.avtoradio.ru/design/images/icons/touch-icon-ipad.png" radio="true" group-title="radio",Авто Радио (RU)
