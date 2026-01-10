@@ -15,16 +15,6 @@ https://player.ibiza.hits1radio.com/
 https://stream.radiojar.com/asngk2sg798uv?1659885393
 
 
-#EXTINF:0 tvg-logo="https://img.radioparadise.com/channels/0/0/banner_500x280/0.jpg" radio="true" group-title="radio",Radio Paradise Main
-https://audio-geo.radioparadise.com/chan/0/x/1158/2/b/1158-0.m4a
-
-#EXTINF:0 tvg-logo="https://img.radioparadise.com/channels/0/3/banner_500x280/0.jpg" radio="true" group-title="radio",Radio Paradise Global
-https://audio-geo.radioparadise.com/chan/3/x/1193/2/b/1193-0.m4a
-
-#EXTINF:0 tvg-logo="https://img.radioparadise.com/channels/0/1/banner_500x280/0.jpg" radio="true" group-title="radio",Radio Paradise Mellow
-https://audio-geo.radioparadise.com/chan/1/x/1247/2/b/1247-0.m4a
-
-
 #EXTINF:0,tvg-logo="https://topradio.me/assets/image/radio/180/dorojnoe-radio.webp" radio="true" group-title="radio",Дорожное Радио (RU)
 https://dorognoe.hostingradio.ru:8000/radio
 ####https://hls-01-dorognoe.emgsound.ru/15/playlist.m3u8
