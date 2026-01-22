@@ -8,8 +8,9 @@ https://radio2.vip-radios.fm:18009/stream-128kmp3-BossaNovaBrazil
 #EXTINF:0 tvg-logo="https://cdn-radiotime-logos.tunein.com/s249943g.png" radio="true" group-title="radio",Absolute Chillout (ES)
 https://streaming.live365.com/b05055_128mp3?playerid=esPlayer&cb=935621.mp3
 
-#EXTINF:0 tvg-logo="https://www.tunedradios.com/static/radio/9188/logo/e478f83ed048bb7148143f5ccbcdf061.webp" radio="true" group-title="radio",Radio Art Yoga (UK)
-https://live.radioart.com/fYoga.mp3
+
+#EXTINF:0 tvg-logo="https://fmcube.net/images/stations/61b09cb0332fd.jpg" radio="true" group-title="radio",Yoga Chill Radio (FR)
+https://stream.pcradio.ru/yoga_chill-hi
 
 #EXTINF:0 tvg-logo="https://www.hits1radio.com/wp-content/uploads/2019/03/1024-300x300.png" radio="true" group-title="radio",Hits One Ibiza (ES)
 https://player.ibiza.hits1radio.com/
