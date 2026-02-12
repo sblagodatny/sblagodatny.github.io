@@ -98,7 +98,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.tmdb" name="TMDB" provider-name="Stas Blagodatny" version="6.9">
+<addon id="plugin.video.tmdb" name="TMDB" provider-name="Stas Blagodatny" version="6.10">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
