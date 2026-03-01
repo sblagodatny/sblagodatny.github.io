@@ -119,7 +119,7 @@
 <assets><icon>icon.png</icon><fanart>fanart.jpg</fanart></assets>
 </extension>
 </addon>
-<addon id="plugin.video.vod" name="VOD" provider-name="Stas Blagodatny" version="8.16">
+<addon id="plugin.video.vod" name="VOD" provider-name="Stas Blagodatny" version="8.17">
 <requires>
 <import addon="xbmc.python" version="3.0.0"></import>
 <import addon="script.module.requests"></import>
