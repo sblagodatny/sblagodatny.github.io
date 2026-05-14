@@ -4,7 +4,7 @@
 https://kancdn.medonecdn.net/livedash/oil/kancdn-live/live/kan11/live.livx?indexMode&futc&relativePaths&dvr=7200000
 
 #EXTINF:0 tvg-id="קשת.il" tvg-logo="https://play-lh.googleusercontent.com/WEuJoZMUBxkiLMab6rxegrhq6sPudrRn2Qemx40ABrr0wuomT9Xvz_EeedfVU_w5c2o=s96-rw" group-title="IL",קשת 12
-plugin://plugin.video.vod/?handler=Play&livetv=keshet
+https://redsight2.duckdns.org/lazyloader/tv/keshet
 
 #EXTINF:0 tvg-id="רשת.il" tvg-logo="https://play-lh.googleusercontent.com/b2ONiP00GBwwlfQmo0CzhomjMpuVQYQDEwKkZxPfmaD2_zDru0cN1OOatvXbCDrf3Yt-=s96-rw" group-title="IL",רשת 13
 https://cdnapisec.kaltura.com/p/2748741/sp/2748741/playManifest/entryId/1_ubg28z0w/deliveryProfileId/672/protocol/https/format/applehttp/a.m3u8?playSessionId=4e30921c-e61a-0bad-57c8-87a5107f1743:a6dd7751-e60b-8f30-9efa-ffe8d9d6359a&referrer=aHR0cHM6Ly8xM3R2LmNvLmlsL2xpdmUv&clientTag=html5:v1.0.2
