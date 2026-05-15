@@ -1,19 +1,19 @@
 #EXTM3U 
 
-#EXTINF:0 tvg-id="כאן.11.il" tvg-logo="https://play-lh.googleusercontent.com/GsEybZ6ldos7BzsU1-UPgYRMC8evF8pFsM70r5pbHdkqlhDf78Y68U_W4bCfFEaoFHg=s96-rw" group-title="IL",כאן 11
+#EXTINF:0 tvg-id="כאן.11.il" tvg-logo="https://play-lh.googleusercontent.com/GsEybZ6ldos7BzsU1-UPgYRMC8evF8pFsM70r5pbHdkqlhDf78Y68U_W4bCfFEaoFHg=s250-rw" group-title="IL",כאן 11
 https://kancdn.medonecdn.net/livedash/oil/kancdn-live/live/kan11/live.livx?indexMode&futc&relativePaths&dvr=7200000
 
-#EXTINF:0 tvg-id="קשת.il" tvg-logo="https://play-lh.googleusercontent.com/WEuJoZMUBxkiLMab6rxegrhq6sPudrRn2Qemx40ABrr0wuomT9Xvz_EeedfVU_w5c2o=s96-rw" group-title="IL",קשת 12
+#EXTINF:0 tvg-id="קשת.il" tvg-logo="https://play-lh.googleusercontent.com/WEuJoZMUBxkiLMab6rxegrhq6sPudrRn2Qemx40ABrr0wuomT9Xvz_EeedfVU_w5c2o=s250-rw" group-title="IL",קשת 12
 https://redsight2.duckdns.org/lazyloader/tv/keshet
 
-#EXTINF:0 tvg-id="רשת.il" tvg-logo="https://play-lh.googleusercontent.com/b2ONiP00GBwwlfQmo0CzhomjMpuVQYQDEwKkZxPfmaD2_zDru0cN1OOatvXbCDrf3Yt-=s96-rw" group-title="IL",רשת 13
+#EXTINF:0 tvg-id="רשת.il" tvg-logo="https://play-lh.googleusercontent.com/b2ONiP00GBwwlfQmo0CzhomjMpuVQYQDEwKkZxPfmaD2_zDru0cN1OOatvXbCDrf3Yt-=s250-rw" group-title="IL",רשת 13
 https://cdnapisec.kaltura.com/p/2748741/sp/2748741/playManifest/entryId/1_ubg28z0w/deliveryProfileId/672/protocol/https/format/applehttp/a.m3u8?playSessionId=4e30921c-e61a-0bad-57c8-87a5107f1743:a6dd7751-e60b-8f30-9efa-ffe8d9d6359a&referrer=aHR0cHM6Ly8xM3R2LmNvLmlsL2xpdmUv&clientTag=html5:v1.0.2
 
-#EXTINF:0 tvg-id="ערוץ.14.HD.il" tvg-logo="https://play-lh.googleusercontent.com/msL5XHCRLhTc_c_Ju1IUlwnGkxqLbC7W47nfZ4Z7jxt5KAorCNROJD-p1N0gupuN0g=s96-rw" group-title="IL",עכשיו 14
+#EXTINF:0 tvg-id="ערוץ.14.HD.il" tvg-logo="https://play-lh.googleusercontent.com/msL5XHCRLhTc_c_Ju1IUlwnGkxqLbC7W47nfZ4Z7jxt5KAorCNROJD-p1N0gupuN0g=s250-rw" group-title="IL",עכשיו 14
 https://n-121-4.il.cdn-redge.media/livehls/oil/ch14/live/ch14/live.livx/playlist.m3u8
 
-#EXTINF:0 tvg-id="כאן.חינוכית.il" tvg-logo="https://play-lh.googleusercontent.com/CJjG5VdfrxPP2IF10gGkUedNAaasR-88wr3Z8Wra2e7EjtYvORCCZWflWGq05NxZ6kY=s96-rw" group-title="IL",כאן חינוכית 23
+#EXTINF:0 tvg-id="כאן.חינוכית.il" tvg-logo="https://play-lh.googleusercontent.com/CJjG5VdfrxPP2IF10gGkUedNAaasR-88wr3Z8Wra2e7EjtYvORCCZWflWGq05NxZ6kY=s250-rw" group-title="IL",כאן חינוכית 23
 https://kancdn.medonecdn.net/livedash/oil/kancdn-live/live/kan_edu/live.livx?indexMode&futc&dvr=7200000
 
-#EXTINF:0 tvg-id="עברית.i24.il" tvg-logo="https://play-lh.googleusercontent.com/RA8F-AD5IbLNNO4Qs_ccgi9p1txoZXmR7ZyN1b3Xx_j8pOf0JQkYHMs-zxYkaFLnzwBD=s96-rw" group-title="IL",I24 חדשות
+#EXTINF:0 tvg-id="עברית.i24.il" tvg-logo="https://play-lh.googleusercontent.com/RA8F-AD5IbLNNO4Qs_ccgi9p1txoZXmR7ZyN1b3Xx_j8pOf0JQkYHMs-zxYkaFLnzwBD=s250-rw" group-title="IL",I24 חדשות
 https://fastly.live.brightcove.com/6386790215112/eu-central-1/5377161796001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZXJmajYzLmVncmVzcy53YzQ3bTEiLCJhY2NvdW50X2lkIjoiNTM3NzE2MTc5NjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI1Mzc3MTYxNzk2MDAxIl0sImp0aSI6IjYzODY3OTAyMTUxMTIifQ.8ZawImK7DfcrrXeAT2OVZ62qQJrJiBaoc7Y1DNNq1bg/playlist-hls.m3u8?__nn__=5476555825001&hdnea=st=1778765400~exp=1778769000~acl=/6386790215112/eu-central-1/5377161796001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZXJmajYzLmVncmVzcy53YzQ3bTEiLCJhY2NvdW50X2lkIjoiNTM3NzE2MTc5NjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI1Mzc3MTYxNzk2MDAxIl0sImp0aSI6IjYzODY3OTAyMTUxMTIifQ.8ZawImK7DfcrrXeAT2OVZ62qQJrJiBaoc7Y1DNNq1bg/*~hmac=c90f516fdd3666b40e91148f35ac6eaf33ddb03136d2cb626c0e139e6ced3944
