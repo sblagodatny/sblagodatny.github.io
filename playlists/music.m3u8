@@ -1,8 +1,7 @@
 #EXTM3U 
 
 #EXTINF:0 tvg-logo="https://bridgetv.ru/s/uploads/show/delyuks-1664969907.jpg" group-title="Music",Bridge Deluxe
-https://hls2-bridgemedia.cdnvideo.ru/bridgemedia/bridge-hd/playlist.fmp4.m3u8?md5=I8hjgdaCQG7dzdgUfk1AnQ|User-Agent=AndroidExoPlayer
+https://redsight2.duckdns.org/lazyloader/tv/bridge
 
 #EXTINF:0 tvg-logo="https://cmflix.net/uploads/tv_image/sm/trace-urban-yull2ltpiy7f.png" group-title="Music",Trace Urban
 https://lightning-traceurban-samsungau.amagi.tv/playlist1080p.m3u8
-
