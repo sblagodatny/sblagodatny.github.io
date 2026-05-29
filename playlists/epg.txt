@@ -1,7 +1,13 @@
 Israel XMLTV
 https://epgshare01.online/epgshare01/epg_ripper_IL1.xml.gz
 
-
 Israel JSONTV
 http://bit.ly/epgfish
 http://bit.ly/epgzip
+
+ILookTV
+
+http://epg.it999.ru/epg2.xml.gz — EPG с прямоугольными иконками с прозрачным фоном
+http://epg.it999.ru/epg.xml.gz — EPG с квадратными иконками с темным фоном
+http://epg.it999.ru/epg2.xml — упрощенный EPG с прямоугольными иконками с прозрачным фоном
+http://epg.it999.ru/epg.xml — упрощенный EPG с квадратными иконками с темным фоном
