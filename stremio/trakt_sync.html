@@ -172,7 +172,7 @@
 
 	let stremioProfile;
 
-    // On Load: Check session existence
+    // On Load: Get stremio profile if token saved
     window.addEventListener('DOMContentLoaded', async () => {        		
 		try {
 			const token = localStorage.getItem('stremio_token');									
@@ -338,33 +338,6 @@
 			syncBtn.disabled = false;
 		}
 		
-		
-	
-/*
-			
-
-			// 3. Request history array out of Trakt API
-			statusMessage.innerText = 'Extracting data matrix from Trakt...';
-			const traktRes = await fetch('https://api.trakt.tv/sync/watched/movies', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${traktToken}`,
-					'trakt-api-version': '2',
-					'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
-				}
-			});
-        
-			if (traktRes.status === 401) throw new Error("Trakt token unauthorized. Try reconnecting Trakt in your Stremio settings.");
-			if (!traktRes.ok) throw new Error(`Trakt API connection error (${traktRes.status})`);
-			const traktData = await traktRes.json();
-
-			const traktWatchedMap = new Map();
-			traktData.forEach(item => {
-				if (item.movie?.ids?.imdb) traktWatchedMap.set(item.movie.ids.imdb, item.movie.title);
-			});
-
-*/        
 	}
 	
 	
