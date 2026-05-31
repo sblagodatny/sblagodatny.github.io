@@ -376,9 +376,15 @@
 				return;
 			}
 		
+		
+		
+		
+			const firstFive = Object.keys(missingSeriesMapStremio).slice(0, 5);
+			alert(`First 5 missing series in Stremio:\n${firstFive.join('\n')}`);
+	
 			
 			// Sync movies to stremio
-			if (numMissingMoviesStremio > 0) {				
+			if (totalMissingMoviesStremio > 0) {				
 				statusMessage.innerText = 'Updating Stremio...';				
 				const stremioLibraryMap = stremioData.result.reduce((map, item) => {
 					map[item._id] = item;
@@ -427,7 +433,7 @@
 
 
 			// Sync movies to trakt
-			if (numMissingMoviesTrakt > 0) {			
+			if (totalMissingMoviesTrakt > 0) {			
 				statusMessage.innerText = 'Updating Trakt...';            				
 				const traktPayload = {
 					movies: Object.entries(missingMoviesMapTrakt).map(([imdbId, watchedDate]) => ({
@@ -453,10 +459,150 @@
 
 			
 			// Sync series to Stremio
-			
+/*
+
+// Determine what shows need updates from Trakt data (Missing + Unsynced where Trakt is ahead)
+        const seriesUpdatesForStremio = [];
+        
+        // Process totally missing series in Stremio
+        for (const [imdbId, traktData] of Object.entries(missingSeriesMapStremio)) {
+            seriesUpdatesForStremio.push({ imdbId, data: traktData });
+        }
+        
+        // Process out-of-sync series where Trakt is further along
+        for (const [imdbId, syncData] of Object.entries(unsyncedSeriesMap)) {
+            if (syncData.trakt.season > syncData.stremio.season || 
+               (syncData.trakt.season === syncData.stremio.season && syncData.trakt.episode > syncData.stremio.episode)) {
+                seriesUpdatesForStremio.push({ imdbId, data: syncData.trakt });
+            }
+        }
+
+        if (seriesUpdatesForStremio.length > 0) {
+            statusMessage.innerText = 'Updating Stremio series...';
+            const stremioLibraryMap = stremioData.result.reduce((map, item) => {
+                map[item._id] = item;
+                return map;
+            }, {});
+            
+            const seriesItemsToUpdate = [];
+            
+            seriesUpdatesForStremio.forEach(({ imdbId, data }) => {
+                const videoId = `${imdbId}:${data.season}:${data.episode}`;
+                
+                if (stremioLibraryMap.hasOwnProperty(imdbId)) {
+                    const existingItem = stremioLibraryMap[imdbId];
+                    if (!existingItem.state) existingItem.state = {};
+                    existingItem.state.video_id = videoId;
+                    existingItem.state.lastWatched = data.date || new Date().toISOString();
+                    seriesItemsToUpdate.push(existingItem);
+                } else {
+                    const newItem = {
+                        _id: imdbId,
+                        type: 'series',
+                        name: imdbId,
+                        removed: true,
+                        temp: true,
+                        state: {
+                            video_id: videoId,
+                            lastWatched: data.date || new Date().toISOString()
+                        }
+                    };
+                    seriesItemsToUpdate.push(newItem);
+                }
+            });
+
+            const updateSeriesRes = await fetch('https://api.strem.io/api/datastorePut', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    authKey: stremioProfile.authKey,
+                    collection: "libraryItem",
+                    changes: seriesItemsToUpdate
+                })
+            });
+            const updateSeriesData = await updateSeriesRes.json();
+            if (updateSeriesData.error) throw new Error(`Unable to update Stremio series: ${updateSeriesData.error.message}`);
+        }
+
+*/			
 			
 			// Sync series to Trakt
 
+/*
+
+
+// Sync series to Trakt
+        // Determine what shows need updates from Stremio data (Missing + Unsynced where Stremio is ahead)
+        const seriesUpdatesForTrakt = [];
+
+        // Process totally missing series in Trakt
+        for (const [imdbId, stremioDataObj] of Object.entries(missingSeriesMapTrakt)) {
+            seriesUpdatesForTrakt.push({ imdbId, data: stremioDataObj });
+        }
+
+        // Process out-of-sync series where Stremio is further along
+        for (const [imdbId, syncData] of Object.entries(unsyncedSeriesMap)) {
+            if (syncData.stremio.season > syncData.trakt.season || 
+               (syncData.stremio.season === syncData.trakt.season && syncData.stremio.episode > syncData.trakt.episode)) {
+                seriesUpdatesForTrakt.push({ imdbId, data: syncData.stremio });
+            }
+        }
+
+        if (seriesUpdatesForTrakt.length > 0) {
+            statusMessage.innerText = 'Updating Trakt series (Lazy Sync Mode)...';
+            
+            const showsPayload = seriesUpdatesForTrakt.map(({ imdbId, data }) => {
+                const seasonsArray = [];
+
+                // 1. Bulk-add all prior completed seasons (Trakt fills these automatically)
+                for (let s = 1; s < data.season; s++) {
+                    seasonsArray.push({
+                        number: s
+                        // Omit the 'episodes' array entirely so Trakt marks the whole season as watched
+                    });
+                }
+
+                // 2. Add individual episodes only for the current active season
+                const currentSeasonEpisodes = [];
+                for (let e = 1; e <= data.episode; e++) {
+                    currentSeasonEpisodes.push({
+                        number: e,
+                        watched_at: data.date || new Date().toISOString()
+                    });
+                }
+                
+                seasonsArray.push({
+                    number: data.season,
+                    episodes: currentSeasonEpisodes
+                });
+
+                return {
+                    ids: { imdb: imdbId },
+                    seasons: seasonsArray
+                };
+            });
+
+            const traktSeriesPayload = { shows: showsPayload };
+
+            const traktSeriesSyncRes = await fetch('https://api.trakt.tv/sync/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${traktToken}`,
+                    'trakt-api-version': '2',
+                    'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
+                },
+                body: JSON.stringify(traktSeriesPayload)
+            });
+            
+            if (!traktSeriesSyncRes.ok) {
+                const errorData = await traktSeriesSyncRes.json().catch(() => ({}));
+                throw new Error(`Unable to update Trakt series: ${errorData.message || traktSeriesSyncRes.statusText}`);
+            }
+        }
+
+
+*/
 
 
 			statusMessage.innerText = 'Sync completed successfully!';
