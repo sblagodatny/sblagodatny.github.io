@@ -70,34 +70,7 @@
         }
         .user-info { font-size: 14px; color: #bbb; }
         .user-info strong { color: #fff; }
-
-        /* Results Panels */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .diff-panel {
-            background-color: #14121f;
-            border-radius: 6px;
-            padding: 15px;
-            border-top: 4px solid #ff4a4a;
-        }
-        .diff-panel.trakt-only { border-top-color: #fcd116; }
-        .diff-panel.stremio-only { border-top-color: #8a5cf5; }
-        
-        h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #3d355c; padding-bottom: 8px; }
-        ul { list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto; }
-        li {
-            padding: 8px 10px;
-            border-bottom: 1px solid #252136;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-        }
-        li span.id { color: #7f8c8d; font-family: monospace; }
-        
+       
         #statusMessage {
             margin-top: 15px;
             padding: 12px;
@@ -142,16 +115,6 @@
 
         <div id="statusMessage"></div>
 
-        <!--div class="grid-layout">
-            <div class="diff-panel trakt-only">
-                <h3 style="color: #fcd116;">Watched on Trakt, Missing on Stremio</h3>
-                <ul id="traktOnlyList"></ul>
-            </div>
-            <div class="diff-panel stremio-only">
-                <h3 style="color: #8a5cf5;">Watched on Stremio, Missing on Trakt</h3>
-                <ul id="stremioOnlyList"></ul>
-            </div>
-        </div-->
     </div>
 </div>
 
@@ -167,8 +130,6 @@
     const logoutBtn = document.getElementById('logoutBtn');
     const statusMessage = document.getElementById('statusMessage');
     const userDisplay = document.getElementById('userDisplay');
-//    const traktOnlyList = document.getElementById('traktOnlyList');
-//    const stremioOnlyList = document.getElementById('stremioOnlyList');
 
 	let stremioProfile;
 
