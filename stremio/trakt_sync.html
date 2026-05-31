@@ -270,7 +270,7 @@
 //			statusMessage.innerText = `Found ${Object.keys(watchedMoviesMapTrakt).length} watched movies in trakt`;
 			
 			// 1. Find items that are in Trakt but missing in Stremio
-			const missingInStremioMap = Object.keys(watchedMoviesMapTrakt)
+			const missingMoviesMapStremio = Object.keys(watchedMoviesMapTrakt)
 				.filter(imdbId => !watchedMoviesMapStremio.hasOwnProperty(imdbId))
 				.reduce((map, imdbId) => {
 					map[imdbId] = watchedMoviesMapTrakt[imdbId];
@@ -278,17 +278,104 @@
 				}, {});
 
 			// 2. Find items that are in Stremio but missing in Trakt
-			const missingInTraktMap = Object.keys(watchedMoviesMapStremio)
+			const missingMoviesMapTrakt = Object.keys(watchedMoviesMapStremio)
 				.filter(imdbId => !watchedMoviesMapTrakt.hasOwnProperty(imdbId))
 				.reduce((map, imdbId) => {
 					map[imdbId] = watchedMoviesMapStremio[imdbId];
 					return map;
 				}, {});
+
+
+
+
+			const numMissingMoviesStremio = Object.keys(missingMoviesMapStremio).length;
+			const numMissingMoviesTrakt = Object.keys(missingMoviesMapTrakt).length;
+			const totalInSyncMovies = Object.keys(watchedMoviesMapStremio).length - numMissingMoviesTrakt;
 			
-			statusMessage.innerText = `${Object.keys(missingInStremioMap).length} items missing in Stremio, ${Object.keys(missingInTraktMap).length} items missing in Trakt`;
+			if (numMissingMoviesStremio===0 && numMissingMoviesTrakt===0) {
+				statusMessage.innerText = `All movies in sync (${totalInSyncMovies})`;
+				return;
+			}
 			
 			
-//			statusMessage.innerText = 'Sync completed';
+			statusMessage.innerText = `Ready for sync`;                
+			const confirmationMessage = `Sync Summary:\n` +
+				`- Movies already in sync: ${totalInSyncMovies}\n` +
+				`- Movies missing in Stremio: ${numMissingMoviesStremio}\n` +
+				`- Movies missing in Trakt: ${numMissingMoviesTrakt}\n\n` +
+				`Proceed with the synchronization?`;
+
+			if (!confirm(confirmationMessage)) {
+				statusMessage.innerText = 'Sync cancelled';
+				return;
+			}
+				
+			statusMessage.innerText = 'Updating Stremio library';
+
+
+			// Create a map of existing library items by ID for easy access/mutation
+			const stremioLibraryMap = stremioData.result.reduce((map, item) => {
+				map[item._id] = item;
+				return map;
+			}, {});
+			
+			const itemsToUpdate = [];
+							
+			for (const [imdbId, watchedDate] of Object.entries(missingMoviesMapStremio)) {
+			
+				if (stremioLibraryMap.hasOwnProperty(imdbId)) {
+					// Item exists in stremio library. Update its watch state.
+					const existingItem = stremioLibraryMap[imdbId];
+					
+					if (!existingItem.state) existingItem.state = {};
+					existingItem.state.flaggedWatched = 1;
+					existingItem.state.timesWatched = (existingItem.state.timesWatched || 0) + 1;
+					existingItem.state.lastWatched = watchedDate || new Date().toISOString();
+					
+					itemsToUpdate.push(existingItem);
+				}
+				else {
+					// Item does not exist in stremio library. Insert a minimal valid skeleton.
+					const newItem = {
+						_id: imdbId,
+						type: 'movie',
+						name: imdbId, // Fallback since we don't have metadata
+						removed: true, // Prevents it from cluttering the user's main UI library
+						temp: true,
+						state: {
+							flaggedWatched: 1,
+							timesWatched: 1,
+							lastWatched: watchedDate || new Date().toISOString()
+						}
+					};
+					
+					itemsToUpdate.push(newItem);
+				}			
+			}
+
+			// Push updates to Stremio if there are any changes
+			if (itemsToUpdate.length > 0) {
+				const updateRes = await fetch('https://api.strem.io/api/datastorePut', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						authKey: stremioProfile.authKey,
+						collection: "libraryItem",
+						changes: itemsToUpdate
+					})
+				});
+				
+				const updateData = await updateRes.json();
+				if (updateData.error) throw new Error(`Unable to update Stremio: ${updateData.error.message}`);
+			}
+
+			statusMessage.innerText = 'Sync completed successfully!';
+
+
+            
+
+
+
 			
 		
 		} catch (error) {           		
