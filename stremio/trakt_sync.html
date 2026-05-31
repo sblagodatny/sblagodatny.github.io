@@ -309,52 +309,45 @@
 				statusMessage.innerText = 'Sync cancelled';
 				return;
 			}
-				
-			statusMessage.innerText = 'Updating Stremio library';
 
 
-			// Create a map of existing library items by ID for easy access/mutation
-			const stremioLibraryMap = stremioData.result.reduce((map, item) => {
-				map[item._id] = item;
-				return map;
-			}, {});
+			if (numMissingMoviesStremio > 0) {	
 			
-			const itemsToUpdate = [];
-							
-			for (const [imdbId, watchedDate] of Object.entries(missingMoviesMapStremio)) {
-			
-				if (stremioLibraryMap.hasOwnProperty(imdbId)) {
-					// Item exists in stremio library. Update its watch state.
-					const existingItem = stremioLibraryMap[imdbId];
-					
-					if (!existingItem.state) existingItem.state = {};
-					existingItem.state.flaggedWatched = 1;
-					existingItem.state.timesWatched = (existingItem.state.timesWatched || 0) + 1;
-					existingItem.state.lastWatched = watchedDate || new Date().toISOString();
-					
-					itemsToUpdate.push(existingItem);
+				statusMessage.innerText = 'Updating Stremio...';				
+				const stremioLibraryMap = stremioData.result.reduce((map, item) => {
+					map[item._id] = item;
+					return map;
+				}, {});			
+				const itemsToUpdate = [];							
+				for (const [imdbId, watchedDate] of Object.entries(missingMoviesMapStremio)) {			
+					if (stremioLibraryMap.hasOwnProperty(imdbId)) {
+						// Item exists in stremio library. Update its watch state.
+						const existingItem = stremioLibraryMap[imdbId];					
+						if (!existingItem.state) existingItem.state = {};
+						existingItem.state.flaggedWatched = 1;
+						existingItem.state.timesWatched = (existingItem.state.timesWatched || 0) + 1;
+						existingItem.state.lastWatched = watchedDate || new Date().toISOString();						
+						itemsToUpdate.push(existingItem);
+					}
+					else {
+						// Item does not exist in stremio library. Insert a minimal valid skeleton.
+						const newItem = {
+							_id: imdbId,
+							type: 'movie',
+							name: imdbId, // Fallback since we don't have metadata
+							removed: true, // Prevents it from cluttering the user's main UI library
+							temp: true,
+								state: {
+								flaggedWatched: 1,
+								timesWatched: 1,
+								lastWatched: watchedDate || new Date().toISOString()
+							}
+						};					
+						itemsToUpdate.push(newItem);
+					}			
 				}
-				else {
-					// Item does not exist in stremio library. Insert a minimal valid skeleton.
-					const newItem = {
-						_id: imdbId,
-						type: 'movie',
-						name: imdbId, // Fallback since we don't have metadata
-						removed: true, // Prevents it from cluttering the user's main UI library
-						temp: true,
-						state: {
-							flaggedWatched: 1,
-							timesWatched: 1,
-							lastWatched: watchedDate || new Date().toISOString()
-						}
-					};
-					
-					itemsToUpdate.push(newItem);
-				}			
-			}
 
-			// Push updates to Stremio if there are any changes
-			if (itemsToUpdate.length > 0) {
+				// Push updates to Stremio if there are any changes				
 				const updateRes = await fetch('https://api.strem.io/api/datastorePut', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
@@ -364,10 +357,43 @@
 						changes: itemsToUpdate
 					})
 				});
-				
+					
 				const updateData = await updateRes.json();
 				if (updateData.error) throw new Error(`Unable to update Stremio: ${updateData.error.message}`);
+				
 			}
+
+
+			if (numMissingMoviesTrakt > 0) {
+			
+				statusMessage.innerText = 'Updating Trakt...';
+            
+				// Build payload for Trakt history API
+				const traktPayload = {
+					movies: Object.entries(missingMoviesMapTrakt).map(([imdbId, watchedDate]) => ({
+						ids: { imdb: imdbId },
+						watched_at: watchedDate || new Date().toISOString()
+					}))
+				};
+
+				const traktSyncRes = await fetch('https://api.trakt.tv/sync/history', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${traktToken}`,
+						'trakt-api-version': '2',
+						'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
+					},
+					body: JSON.stringify(traktPayload)
+				});
+				if (!traktSyncRes.ok) {
+					const errorData = await traktSyncRes.json().catch(() => ({}));
+					throw new Error(`Unable to update Trakt: ${errorData.message || traktSyncRes.statusText}`);
+				}
+				
+			}
+
+
 
 			statusMessage.innerText = 'Sync completed successfully!';
 
