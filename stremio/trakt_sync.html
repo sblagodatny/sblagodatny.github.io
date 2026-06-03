@@ -113,28 +113,30 @@
             <button class="btn btn-danger" id="logoutBtn">Logout</button>
         </div>
         
-        <!-- Updated synchronization activation button -->
-        <button class="btn btn-primary" id="syncBtn">Trakt Sync</button>
+        
+        <div class="button-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
+			<button class="btn btn-primary" id="btnSyncTraktMovies">Trakt Movies Sync</button>
+			<button class="btn btn-primary" id="btnSyncTraktSeries">Trakt Series Sync</button>
+		</div>
 
-        <div id="statusMessage"></div>
+		<div id="statusMessage" style="height: 50vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; text-align: left;"></div>
 
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script-->
 <script>
-    // Constants
-    const STREMIO_TRAKT_CLIENT_ID = "0e861f52c7365efe6da5ea3e2e6641b8d25d87aca3133e8d4f7dc8487368d14b";
-	
-    // DOM Elements
+    
     const loginState = document.getElementById('loginState');
     const appState = document.getElementById('appState');
     const loginForm = document.getElementById('loginForm');
-    const syncBtn = document.getElementById('syncBtn');
+    const btnSyncTraktMovies = document.getElementById('btnSyncTraktMovies');
+	const btnSyncTraktSeries = document.getElementById('btnSyncTraktSeries');
     const logoutBtn = document.getElementById('logoutBtn');
     const statusMessage = document.getElementById('statusMessage');
     const userDisplay = document.getElementById('userDisplay');
-
+	const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+	
 	let stremioProfile;
 
     // On Load: Get stremio profile if token saved
@@ -208,556 +210,34 @@
 		loginState.style.display = 'none';
         appState.style.display = 'block';
         userDisplay.innerText = stremioProfile.email;
+		statusMessage.innerText = '';	
     }
 	
 	
-
-    // Manual Sync Button Trigger
-    syncBtn.addEventListener('click', () => {
-		runSync();        
-    });
-
-/*   
-	function parseStremioWatchedString(watchedString) {
-		
-if (!watchedString || !watchedString.includes(':')) return null;
-
-    const parts = watchedString.split(':');
-    
-    // The final block is always our Base64 bit-tracker
-    const base64Blob = parts.pop(); 
-    
-    // Extract parameters from the remaining structure
-    const totalEpisodes = parseInt(parts.pop(), 10);
-    const lastWatchedEpisode = parseInt(parts.pop(), 10);
-    const lastWatchedSeason = parseInt(parts.pop(), 10);
-    const metaId = parts.join(':'); // Re-join in case ID contains colons like tmdb:76829
-
-    try {
-        // 1. Decode Base64 to raw bytes
-        const binaryString = window.atob(base64Blob);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-
-        // 2. Decompress raw bytes using Pako (No string extraction)
-        const decompressedBytes = pako.inflate(bytes);
-
-        // 3. Extract the bit values (0 or 1) sequentially
-        const episodeList = [];
-        for (let b = 0; b < decompressedBytes.length; b++) {
-            const currentByte = decompressedBytes[b];
-            for (let bitShift = 0; bitShift < 8; bitShift++) {
-                // Read bits from right to left
-                episodeList.push((currentByte >> bitShift) & 1);
-            }
-        }
-
-        // 4. Clean up trailing buffer padding bits to match exact episode count
-        const trackedHistory = episodeList.slice(0, totalEpisodes);
-
-        return {
-            metaId,
-            lastWatched: {
-                season: lastWatchedSeason,
-                episode: lastWatchedEpisode
-            },
-            totalEpisodesInSeries: totalEpisodes,
-            // Array of 1s (watched) and 0s (unwatched) matching chronological sequence
-            watchedFlags: trackedHistory 
-        };
-
-    } catch (error) {
-        console.error(`Failed parsing logic for ${metaId}:`, error);
-        return null;
-    }
-
+	function log(message, color = '#fff') {
+		const timestamp = new Date().toISOString();    
+		const logRow = `<div style="color: ${color};">${timestamp}: ${message}</div>`;    
+		statusMessage.innerHTML += logRow;    
+		statusMessage.scrollTop = statusMessage.scrollHeight;
 	}
-*/
-
-function parseStremioWatchedString(watchedString) {
-    if (!watchedString || !watchedString.includes(':')) return null;
-
-    const parts = watchedString.split(':');
-    const base64Blob = parts.pop(); 
-    const totalEpisodes = parseInt(parts.pop(), 10);
-    const lastWatchedEpisodePointer = parseInt(parts.pop(), 10);
-    const lastWatchedSeasonPointer = parseInt(parts.pop(), 10);
-    const metaId = parts.join(':');
-
-    try {
-        // 1. Decode base64
-        const binaryString = window.atob(base64Blob);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-
-        // 2. Decompress to raw numerical bytes
-        const decompressedBytes = pako.inflate(bytes);
-
-        // 3. Find the ABSOLUTE LAST byte that contains a watched marker (any value > 0)
-        let lastActiveByteIndex = -1;
-        for (let i = decompressedBytes.length - 1; i >= 0; i--) {
-            if (decompressedBytes[i] > 0) {
-                lastActiveByteIndex = i;
-                break;
-            }
-        }
-
-        // If no bits are turned on anywhere, nothing is watched
-        if (lastActiveByteIndex === -1) {
-            return { metaId, maxSeason: 0, maxEpisode: 0 };
-        }
-
-        // 4. Extract the active binary details of that specific byte
-        const targetByte = decompressedBytes[lastActiveByteIndex];
-        let highestBitInByte = 0;
-        for (let bitShift = 7; bitShift >= 0; bitShift--) {
-            if ((targetByte >> bitShift) & 1) {
-                highestBitInByte = bitShift + 1; // 1-based episode index within this byte block
-                break;
-            }
-        }
-
-        // 5. THE SYNC ALIGNMENT RECONCILIATION:
-        // Compare the raw byte pointer location against Stremio's plain-text fallback hints.
-        let calculatedSeason = lastWatchedSeasonPointer;
-        let calculatedEpisode = lastWatchedEpisodePointer;
-
-        if (lastWatchedSeasonPointer === 0 && lastWatchedEpisodePointer === 0) {
-            // If the user hit "Mark all as watched" on Season 1 of a new show, pointers stay 0.
-            // A single byte block handles up to 8 episodes.
-            calculatedSeason = 1;
-            calculatedEpisode = highestBitInByte;
-        } else if (lastActiveByteIndex === 0) {
-            // Everything is happening inside the very first byte block (Season 1 or Season 0)
-            calculatedSeason = lastWatchedSeasonPointer || 1;
-            calculatedEpisode = Math.max(highestBitInByte, lastWatchedEpisodePointer);
-        } else {
-            // For multi-season jumps where the pointer reset or lagged out:
-            // If our binary index found data further along than the text pointer, trust the binary block boundary
-            if (lastWatchedSeasonPointer === 0) calculatedSeason = 1;
-            calculatedEpisode = Math.max(highestBitInByte, lastWatchedEpisodePointer);
-        }
-
-        return {
-            metaId,
-            maxSeason: calculatedSeason,
-            maxEpisode: calculatedEpisode
-        };
-
-    } catch (error) {
-        // Return structured fallback instead of crashing the batch sync loop
-        return {
-            metaId,
-            maxSeason: lastWatchedSeasonPointer,
-            maxEpisode: lastWatchedEpisodePointer,
-            error: true
-        };
-    }
-}
-
-        
-
-
-    // Core Request & Diff Comparison Function
-    async function runSync() {
-		
-		try {
-		
-			syncBtn.disabled = true;
-			statusMessage.style.color = '#fff';
-			
-			traktToken = stremioProfile.trakt?.access_token || null;
-			if (!traktToken) throw new Error('Trakt account not set in Stremio');
-		
-		
-			// map format: "ttIMDB -> {watchedDate} for movies
-			// map format: "ttIMDB -> {season,episode, watchedDate} for series (refers to last watched episode)
-
-		
-			// Get watched items from stremio			
-			statusMessage.innerText = 'Getting stremio data...';			
-			const stremioRes = await fetch('https://api.strem.io/api/datastoreGet', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },			
-				body: JSON.stringify({ 
-					authKey: stremioProfile.authKey, 
-					collection: "libraryItem",
-					all: true 
-				})				
-			});
-			const stremioData = await stremioRes.json();
-			if (stremioData.error) throw new Error(`Unable to fetch stremio data: ${stremioData.error.message}`);														
-			const watchedMoviesMapStremio = {}; 
-			const watchedSeriesMapStremio = {}; 
-			
-			stremioData.result.forEach(item => {
-				if (!item._id.startsWith('tt') || !item.state) return;
-				if (!(item.state.timesWatched > 0 || item.state.flaggedWatched === 1)) return;                
-				if (item.type === 'movie') {
-					watchedMoviesMapStremio[item._id] = { name: item.name, lastWatchedDate: item.state.lastWatched, watched: item.state.watched  };                
-				} else if (item.type === 'series') {											
-//					let parts = item.state.watched.split(':');										
-//					watchedSeriesMapStremio[parts[0]] = {season: parseInt(parts[1]), episode: parseInt(parts[2]), date: item.state.lastWatched || new Date().toISOString() };
-					watchedSeriesMapStremio[item._id] = { name: item.name, date: item.state.lastWatched, watched: parseStremioWatchedString(item.state.watched) }
-					
-
-				}
-			});
-			
-			console.log(JSON.stringify(watchedSeriesMapStremio));
-			
-												
-			
-/*			
-			// Get watched items from trakt			
-			statusMessage.innerText = 'Getting trakt data (movies)...';                        
-			const traktMovieRes = await fetch('https://api.trakt.tv/sync/watched/movies', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${traktToken}`,
-					'trakt-api-version': '2',
-					'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
-				}           
-			});
-			const traktMovieData = await traktMovieRes.json();
-			const watchedMoviesMapTrakt = traktMovieData.reduce((map, item) => {
-				const imdbId = item.movie && item.movie.ids && item.movie.ids.imdb; 
-				if (imdbId) map[imdbId] = { date: item.last_watched_at };
-				return map;
-			}, {});
-			statusMessage.innerText = 'Getting trakt data (series)...';
-			const traktShowRes = await fetch('https://api.trakt.tv/sync/watched/shows', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${traktToken}`,
-					'trakt-api-version': '2',
-					'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
-				}           
-			});
-			const traktShowData = await traktShowRes.json();									
-			const watchedSeriesMapTrakt = {};  // format: "ttIMDB -> {season,episode, watchedDate} for last watched episode  
-			traktShowData.forEach(showItem => {
-				const showImdbId = showItem.show?.ids?.imdb;
-				if (!showImdbId) return;
-				let maxSeason = 0;
-				let maxEpisode = 0;
-				let lastWatchedAt = null;
-				showItem.seasons.forEach(season => {
-					season.episodes.forEach(episode => {
-						if (season.number > maxSeason || (season.number === maxSeason && episode.number > maxEpisode)) {
-							maxSeason = season.number;
-							maxEpisode = episode.number;
-							lastWatchedAt = episode.last_watched_at;
-						}
-					});
-				});
-				if (maxSeason > 0) {
-					watchedSeriesMapTrakt[showImdbId] = {
-						season: maxSeason,
-						episode: maxEpisode,
-						date: lastWatchedAt || new Date().toISOString()
-					};
-				}
-			});
-			
-			
-			
-			
-			// Calculate Diffs for movies
-			const missingMoviesMapStremio = Object.keys(watchedMoviesMapTrakt)
-				.filter(imdbId => !watchedMoviesMapStremio.hasOwnProperty(imdbId))
-				.reduce((map, imdbId) => { map[imdbId] = watchedMoviesMapTrakt[imdbId]; return map; }, {});
-			const missingMoviesMapTrakt = Object.keys(watchedMoviesMapStremio)
-				.filter(imdbId => !watchedMoviesMapTrakt.hasOwnProperty(imdbId))
-				.reduce((map, imdbId) => { map[imdbId] = watchedMoviesMapStremio[imdbId]; return map; }, {});
-		
-
-			// 4. Calculate Diffs for series
-			const missingSeriesMapStremio = {}; // Maps: imdbId -> { season, episode, date }
-			const missingSeriesMapTrakt = {};   // Maps: imdbId -> { season, episode, date }
-			const unsyncedSeriesMap = {};		// Maps: imdbId -> { stremio: {...}, trakt: {...} }
-			const syncedSeriesMap = {};         // Maps: imdbId -> { season, episode, date }
-			const allShowIds = new Set([...Object.keys(watchedSeriesMapStremio), ...Object.keys(watchedSeriesMapTrakt)]);
-			allShowIds.forEach(showId => {
-				const stremioSeries = watchedSeriesMapStremio[showId];
-				const traktSeries = watchedSeriesMapTrakt[showId];
-				if (stremioSeries && !traktSeries) missingSeriesMapTrakt[showId] = stremioSeries;            
-				else if (!stremioSeries && traktSeries) missingSeriesMapStremio[showId] = traktSeries;            
-				else {
-					if (stremioSeries.season === traktSeries.season && stremioSeries.episode === traktSeries.episode) {
-						syncedSeriesMap[showId] = stremioSeries
-					} else {                    
-						unsyncedSeriesMap[showId] = { stremio: stremioSeries, trakt: traktSeries };
-					}
-				}              
-			});
-
-        
-			// Sync summary
-			const totalMissingMoviesStremio = Object.keys(missingMoviesMapStremio).length;
-			const totalMissingMoviesTrakt = Object.keys(missingMoviesMapTrakt).length;
-			const totalInSyncMovies = Object.keys(watchedMoviesMapStremio).length - totalMissingMoviesTrakt;
-			const totalInSyncSeries = Object.keys(syncedSeriesMap).length;
-			const totalMissingSeriesStremio = Object.keys(missingSeriesMapStremio).length;
-			const totalMissingSeriesTrakt = Object.keys(missingSeriesMapTrakt).length;
-			const totalUnsyncedSeries = Object.keys(unsyncedSeriesMap).length;
-			const needsSync = totalMissingMoviesStremio > 0 || totalMissingMoviesTrakt > 0 || totalMissingSeriesStremio > 0 || totalMissingSeriesTrakt > 0 || totalUnsyncedSeries > 0;        
-			if (!needsSync) {
-				statusMessage.innerText = `Everything in sync (Movies: ${totalInSyncMovies}, Series: ${totalInSyncSeries})`;
-				return;
-			}        
-			statusMessage.innerText = `Ready for sync`;                
-			const confirmationMessage = `Sync Summary:\n\n` +
-				`[Movies]\n` +
-				`- In Sync: ${totalInSyncMovies}\n` +
-				`- Missing in Stremio: ${totalMissingMoviesStremio}\n` +
-				`- Missing in Trakt: ${totalMissingMoviesTrakt}\n\n` +
-				`[Series]\n` +
-				`- In Sync: ${totalInSyncSeries}\n` +
-				`- Missing in Stremio: ${totalMissingSeriesStremio}\n` +
-				`- Missing in Trakt: ${totalMissingSeriesTrakt}\n` +
-				`- Exists in both but has unsynced episodes: ${totalUnsyncedSeries}\n\n` +
-				`Proceed with synchronization?`;
-			if (!confirm(confirmationMessage)) {
-				statusMessage.innerText = '';
-				return;
+    
+    btnSyncTraktMovies.addEventListener('click', async () => {		
+		try {		
+			btnSyncTraktMovies.disabled = true;
+			statusMessage.innerHTML = '';				
+			log("Started");
+			for (let i = 0; i < 30; i++) {
+				await delay(1000); // Wait for 1 second (1000 milliseconds)
+				log(`Step ${i}`);
 			}
-		
-		
-		
-			// Sync movies to stremio
-			if (totalMissingMoviesStremio > 0) {				
-				statusMessage.innerText = 'Updating Stremio movies...';				
-				const stremioLibraryMap = stremioData.result.reduce((map, item) => {
-					map[item._id] = item;
-					return map;
-				}, {});			
-				const itemsToUpdate = [];							
-				for (const [imdbId, item] of Object.entries(missingMoviesMapStremio)) {			
-					if (stremioLibraryMap.hasOwnProperty(imdbId)) {
-						// Item exists in stremio library. Update its watch state.
-						const existingItem = stremioLibraryMap[imdbId];					
-						if (!existingItem.state) existingItem.state = {};
-						existingItem.state.flaggedWatched = 1;
-						existingItem.state.timesWatched = (existingItem.state.timesWatched || 0) + 1;
-						existingItem.state.lastWatched = item.date || new Date().toISOString();						
-						itemsToUpdate.push(existingItem);
-					}
-					else {
-						// Item does not exist in stremio library. Insert a minimal valid skeleton.
-						const newItem = {
-							_id: imdbId,
-							type: 'movie',
-							name: imdbId, // Fallback since we don't have metadata
-							removed: true, // Prevents it from cluttering the user's main UI library
-							temp: true,
-								state: {
-								flaggedWatched: 1,
-								timesWatched: 1,
-								lastWatched: item.date || new Date().toISOString()
-							}
-						};					
-						itemsToUpdate.push(newItem);
-					}			
-				}		
-				const updateRes = await fetch('https://api.strem.io/api/datastorePut', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						authKey: stremioProfile.authKey,
-						collection: "libraryItem",
-						changes: itemsToUpdate
-					})
-				});					
-				const updateData = await updateRes.json();
-				if (updateData.error) throw new Error(`Unable to update Stremio movies: ${updateData.error.message}`);				
-			}
-
-
-			// Sync movies to trakt
-			if (totalMissingMoviesTrakt > 0) {			
-				statusMessage.innerText = 'Updating Trakt movies...';            				
-				const traktPayload = {
-					movies: Object.entries(missingMoviesMapTrakt).map(([imdbId, item]) => ({
-						ids: { imdb: imdbId },
-						watched_at: item.date || new Date().toISOString()
-					}))
-				};
-				const traktSyncRes = await fetch('https://api.trakt.tv/sync/history', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${traktToken}`,
-						'trakt-api-version': '2',
-						'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
-					},
-					body: JSON.stringify(traktPayload)
-				});
-				if (!traktSyncRes.ok) {
-					const errorData = await traktSyncRes.json().catch(() => ({}));
-					throw new Error(`Unable to update Trakt movies: ${errorData.message || traktSyncRes.statusText}`);
-				}				
-			}
-*/
-			
-			// Sync series to Stremio
-/*
-
-// Determine what shows need updates from Trakt data (Missing + Unsynced where Trakt is ahead)
-        const seriesUpdatesForStremio = [];
-        
-        // Process totally missing series in Stremio
-        for (const [imdbId, traktData] of Object.entries(missingSeriesMapStremio)) {
-            seriesUpdatesForStremio.push({ imdbId, data: traktData });
-        }
-        
-        // Process out-of-sync series where Trakt is further along
-        for (const [imdbId, syncData] of Object.entries(unsyncedSeriesMap)) {
-            if (syncData.trakt.season > syncData.stremio.season || 
-               (syncData.trakt.season === syncData.stremio.season && syncData.trakt.episode > syncData.stremio.episode)) {
-                seriesUpdatesForStremio.push({ imdbId, data: syncData.trakt });
-            }
-        }
-
-        if (seriesUpdatesForStremio.length > 0) {
-            statusMessage.innerText = 'Updating Stremio series...';
-            const stremioLibraryMap = stremioData.result.reduce((map, item) => {
-                map[item._id] = item;
-                return map;
-            }, {});
-            
-            const seriesItemsToUpdate = [];
-            
-            seriesUpdatesForStremio.forEach(({ imdbId, data }) => {
-                const videoId = `${imdbId}:${data.season}:${data.episode}`;
-                
-                if (stremioLibraryMap.hasOwnProperty(imdbId)) {
-                    const existingItem = stremioLibraryMap[imdbId];
-                    if (!existingItem.state) existingItem.state = {};
-                    existingItem.state.video_id = videoId;
-                    existingItem.state.lastWatched = data.date || new Date().toISOString();
-                    seriesItemsToUpdate.push(existingItem);
-                } else {
-                    const newItem = {
-                        _id: imdbId,
-                        type: 'series',
-                        name: imdbId,
-                        removed: true,
-                        temp: true,
-                        state: {
-                            video_id: videoId,
-                            lastWatched: data.date || new Date().toISOString()
-                        }
-                    };
-                    seriesItemsToUpdate.push(newItem);
-                }
-            });
-
-            const updateSeriesRes = await fetch('https://api.strem.io/api/datastorePut', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    authKey: stremioProfile.authKey,
-                    collection: "libraryItem",
-                    changes: seriesItemsToUpdate
-                })
-            });
-            const updateSeriesData = await updateSeriesRes.json();
-            if (updateSeriesData.error) throw new Error(`Unable to update Stremio series: ${updateSeriesData.error.message}`);
-        }
-
-*/			
-/*			
-			// Sync series to Trakt
-			const seriesUpdatesForTrakt = [];
-			// Process totally missing series in Trakt
-			for (const [imdbId, stremioDataObj] of Object.entries(missingSeriesMapTrakt)) {
-				seriesUpdatesForTrakt.push({ imdbId, data: stremioDataObj });
-			}
-
-			// Process out-of-sync series where Stremio is further along
-			for (const [imdbId, syncData] of Object.entries(unsyncedSeriesMap)) {
-				if (syncData.stremio.season > syncData.trakt.season || (syncData.stremio.season === syncData.trakt.season && syncData.stremio.episode > syncData.trakt.episode)) {
-					seriesUpdatesForTrakt.push({ imdbId, data: syncData.stremio, exists: 1 });
-				}
-			}
-
-			if (seriesUpdatesForTrakt.length > 0) {
-				statusMessage.innerText = 'Updating Trakt series...';
-				
-				console.log (JSON.stringify(seriesUpdatesForTrakt));
-*/				
- /*           
-				const showsPayload = seriesUpdatesForTrakt.map(({ imdbId, data }) => {					
-					const seasonsArray = [];
-					// 1. Bulk-add all prior completed seasons (Trakt fills these automatically)
-					for (let s = 1; s < data.season; s++) {
-						seasonsArray.push({
-							number: s
-							// Omit the 'episodes' array entirely so Trakt marks the whole season as watched
-						});
-					}
-					// 2. Add individual episodes only for the current active season
-					const currentSeasonEpisodes = [];
-					for (let e = 1; e <= data.episode; e++) {
-						currentSeasonEpisodes.push({
-							number: e,
-							watched_at: data.date || new Date().toISOString()
-						});
-					}                
-					seasonsArray.push({
-						number: data.season,
-						episodes: currentSeasonEpisodes
-					});
-					return {
-						ids: { imdb: imdbId },
-						seasons: seasonsArray
-					};
-				});
-
-				const traktSeriesPayload = { shows: showsPayload };
-
-				const traktSeriesSyncRes = await fetch('https://api.trakt.tv/sync/history', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${traktToken}`,
-						'trakt-api-version': '2',
-						'trakt-api-key': STREMIO_TRAKT_CLIENT_ID
-					},
-					body: JSON.stringify(traktSeriesPayload)
-				});
-            
-				if (!traktSeriesSyncRes.ok) {
-					const errorData = await traktSeriesSyncRes.json().catch(() => ({}));
-					throw new Error(`Unable to update Trakt series: ${errorData.message || traktSeriesSyncRes.statusText}`);
-				}
-				
-			}
-*/
-
-
-
-
-			statusMessage.innerText = 'Sync completed successfully!';
-			
-		
+			log("Completed successfully", '#28a745');
+						
 		} catch (error) {           		
-			statusMessage.style.color = '#ff6b6b';
-			statusMessage.innerText = `Error: ${error.message}`;
-			
+			log(`Error: ${error.message}`, '#ff6b6b');			
 		} finally {
-			syncBtn.disabled = false;
-		}
-		
-	}
-	
+			btnSyncTraktMovies.disabled = false;
+		}			
+    });		
 	
 	
 </script>
