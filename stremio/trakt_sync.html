@@ -116,7 +116,7 @@
         
         <div class="button-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
 			<button class="btn btn-primary" id="btnTraktSync">Trakt Sync</button>
-			<!--button class="btn btn-primary" id="btnSyncTraktSeries">Trakt Series Sync</button-->
+			<!--button class="btn btn-primary" id="btnTraktSyncFix">Trakt Sync Fix</button-->
 		</div>
 
 		<div id="statusMessage" style="height: 50vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; text-align: left;"></div>
@@ -166,8 +166,9 @@
         loginBtn.disabled = true;
         loginBtn.innerText = 'Connecting...';
         try {
-            stremioProfile = await loginStremio(email, password);
-            showDashboard();
+            stremioProfile = await loginStremio(email, password);            
+			localStorage.setItem('stremio_token', stremioProfile.authKey);												
+			showDashboard();
         } catch (error) {
             alert(`Authentication Error: ${error.message}`);
         } finally {
@@ -227,6 +228,7 @@
 					
 			log("Calculating diffs...");				
 			const joinedWatched = outerJoin(traktWatched, stremioWatched, 'trakt', 'stremio');														
+/*			
 			const getDiffs = (dataList) => dataList.reduce((acc, item) => {
 				const { trakt: t, stremio: s } = item;   
 				if ((t?.season > 100) || (s?.season > 100 || t?.episode > 200 || s?.episode > 200 )) return acc;    // Remove extra long series (probably junk data)
@@ -234,6 +236,16 @@
 				const sScore = s ? (s.season ?? 0) * 1000 + (s.episode ?? 0) : 0;
 				if (!t || sScore > tScore) acc.updateInTrakt.push(item);
 				if (!s || tScore > sScore) acc.updateInStremio.push(item);
+				return acc;
+			}, { updateInTrakt: [], updateInStremio: [] });
+			const { updateInTrakt, updateInStremio } = getDiffs(joinedWatched);
+*/
+
+			const getDiffs = (dataList) => dataList.reduce((acc, item) => {
+				const { trakt: t, stremio: s } = item;   
+				if ((t?.season > 100) || (s?.season > 100 || t?.episode > 200 || s?.episode > 200 )) return acc;    // Remove extra long series (probably junk data)				
+				if (!t) acc.updateInTrakt.push(item);
+				if (!s) acc.updateInStremio.push(item);
 				return acc;
 			}, { updateInTrakt: [], updateInStremio: [] });
 			const { updateInTrakt, updateInStremio } = getDiffs(joinedWatched);
@@ -280,6 +292,8 @@
 			btnTraktSync.disabled = false;
 		}			
     });		
+	
+	
 	
 	
 </script>
