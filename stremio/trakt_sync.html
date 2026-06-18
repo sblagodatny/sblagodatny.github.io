@@ -224,7 +224,7 @@
 			const traktWatched = [...traktWatchedMovies, ...traktWatchedSeries];
 			
 			log("Getting stremio items...");			
-			const stremioWatched = await getStremioLibrary(stremioProfile.authKey, {imdb: true, watched: true});									
+			const stremioWatched = await getStremioLibrary(stremioProfile.authKey, {imdb: true});									
 					
 			log("Calculating diffs...");				
 			const joinedWatched = outerJoin(traktWatched, stremioWatched, 'trakt', 'stremio');														
@@ -243,9 +243,9 @@
 
 			const getDiffs = (dataList) => dataList.reduce((acc, item) => {
 				const { trakt: t, stremio: s } = item;   
-				if ((t?.season > 100) || (s?.season > 100 || t?.episode > 200 || s?.episode > 200 )) return acc;    // Remove extra long series (probably junk data)				
-				if (!t) acc.updateInTrakt.push(item);
-				if (!s) acc.updateInStremio.push(item);
+				if (t?.season > 100 || s?.season > 100 || t?.episode > 200 || s?.episode > 200) return acc;    // Remove extra long series (probably junk data)				
+				if (s && s.watched && !t ) acc.updateInTrakt.push(item);
+				if (t && (!s || !s.watched)) acc.updateInStremio.push(item);
 				return acc;
 			}, { updateInTrakt: [], updateInStremio: [] });
 			const { updateInTrakt, updateInStremio } = getDiffs(joinedWatched);
@@ -263,8 +263,8 @@
 				if (confirm(`Confirm trakt update (${updateInTrakt.length} items)?`)) {
 					log("Updating trakt...");			
 					const traktUpdateResult = await updateTraktWatchedItems(updateInTrakt, traktToken);
-					console.log('traktUpdateResult');
-					console.log(JSON.stringify(traktUpdateResult));
+//					console.log('traktUpdateResult');
+//					console.log(JSON.stringify(traktUpdateResult));
 				}
 				else {
 					log("Skipped trakt update");		
@@ -276,8 +276,8 @@
 				if (confirm(`Confirm stremio update (${updateInStremio.length} items)?`)) {
 					log("Updating stremio...");			
 					const stremioUpdateResult = await updateStremioWatchedItems(updateInStremio, stremioProfile.authKey);
-					console.log('stremioUpdateResult');
-					console.log(JSON.stringify(stremioUpdateResult));
+//					console.log('stremioUpdateResult');
+//					console.log(JSON.stringify(stremioUpdateResult));
 				}
 				else {
 					log("Skipped stremio update");		

@@ -82,11 +82,10 @@ export async function updateStremioWatchedItems(items, token) {
 		let s;
 		if (item.stremio) {
 			s=item.stremio.data;
-			s._mtime= new Date().toISOString()
-			s.state.lastWatched = t.watchedDate
-			if (t.type === 'series') {
-				s.state.watched = `${t.id}:${t.season}:${t.episode}:0:`;
-			}
+			s._mtime= new Date().toISOString();
+			s.state.lastWatched = t.watchedDate || new Date().toISOString();
+			s.state.timesWatched = 1;
+//			if (t.type === 'series') { s.state.watched = `${t.id}:${t.season}:${t.episode}:0:`; }
 		}
 		else {
 			s = {				
@@ -112,9 +111,7 @@ export async function updateStremioWatchedItems(items, token) {
 					noNotif: true      // disable notifications on new episodes
 				}
 			}
-			if (t.type === 'series') {
-				s.state.watched = `${item.id}:${t.season}:${t.episode}:0:`;
-			}
+//			if (t.type === 'series') { s.state.watched = `${item.id}:${t.season}:${t.episode}:0:`; }
 		}
 								
 		itemsToUpdate.push(s);

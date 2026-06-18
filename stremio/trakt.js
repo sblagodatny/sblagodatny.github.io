@@ -92,79 +92,49 @@ const itemsToUpdate = [
 
 */
 
+
+
+
+
+
 export async function updateTraktWatchedItems(items, token, clientId = STREMIO_TRAKT_CLIENT_ID) {
 	const movies = [];
-	const showsMap = new Map();
+	const shows = [];
 
 	for (let i = 0; i < items.length; i++) {
 		const item = items[i];
 		const s = item.stremio;
-
 		if (s.type === 'movie') {
 			movies.push({
-				watched_at: s.watchedDate,
-				ids: { imdb: item.id }
+				ids: { imdb: item.id },
+				watched_at: s.watchedDate
 			});
 		} 
 		else if (s.type === 'series') {
-			if (!s.season || !s.episode) continue;
-			const traktSeason = item.trakt ? (item.trakt.season || 0) : 0;
-			const traktEpisode = item.trakt ? (item.trakt.episode || 0) : 0;
-			const targetSeason = s.season;
-			const targetEpisode = s.episode;
-			if (!showsMap.has(item.id)) {
-				showsMap.set(item.id, {
-					ids: { imdb: item.id },
-					seasons: []
-				});
-			}
-			const showObj = showsMap.get(item.id);
-
-/*			
-			// 1. BACKFILL PRIOR FULL SEASONS (Only if Stremio skipped ahead past a whole season)
-			// Start from traktSeason + 1 to avoid wiping out or duplicating Trakt's current season history
-			if (traktSeason < targetSeason) {
-				for (let sNum = traktSeason; sNum < targetSeason; sNum++) {
-					showObj.seasons.push({
-						number: sNum
-					});
-				}
-			}
-*/
-
-			// 2. BACKFILL CURRENT SEASON EPISODES (Calculate the true gap)
-			// If we are on the exact same season Trakt left off on, start from the next episode.
-			// If Stremio jumped to a completely new season, we must start backfilling this season from episode 1.
-			const startEpisode = (targetSeason === traktSeason) ? (traktEpisode + 1) : 1;      
-			const currentSeasonEpisodes = [];
-			for (let epNum = startEpisode; epNum <= targetEpisode; epNum++) {
-				currentSeasonEpisodes.push({
-					number: epNum,
-					watched_at: s.watchedDate
-				});
-			}
-
-			// Only push the season structure if there are actual missing episodes to update
-			if (currentSeasonEpisodes.length > 0) {
-				showObj.seasons.push({
-					number: targetSeason,
-					episodes: currentSeasonEpisodes
-				});
-			}		
+			shows.push({				
+				ids: { imdb: item.id },
+				seasons: [
+					{
+						number: 1,
+						episodes: [
+							{
+								number: 1,
+								watched_at: s.watchedDate
+							}
+						]
+					}
+				]
+			});												
 		}
 		
 	}
 
 	const payload = {
 		movies: movies,
-		shows: Array.from(showsMap.values())
+		shows: shows,
 	};
 
-	if (payload.movies.length === 0 && payload.shows.length === 0) {return null;}
-
-//	console.log('trakt payload');
-//	console.log(JSON.stringify(payload));
-  
+	if (payload.movies.length === 0 && payload.shows.length === 0) {return null;}  
 	const response = await fetch('https://api.trakt.tv/sync/history', {
 		method: 'POST',
 		headers: {
@@ -185,4 +155,3 @@ export async function updateTraktWatchedItems(items, token, clientId = STREMIO_T
 
 	 
 }
-
